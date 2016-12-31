@@ -4,7 +4,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use be\kunstmaan\multichain\MultichainClient;
 use be\kunstmaan\multichain\MultichainHelper;
 
-ini_set('date.timezone', 'UTC');
 if (PHP_SAPI == 'cli-server') {
     // To help the built-in PHP dev server, check if the request was actually for
     // something which should probably be served as a static file
@@ -29,17 +28,16 @@ require __DIR__ . '/../src/dependencies.php';
 // Register middleware
 require __DIR__ . '/../src/middleware.php';
 
-// Register middleware
+// Short URL Function middleware
 require __DIR__ . '/../src/functions.php';
 
 // Register routes
 require __DIR__ . '/../src/routes.php';
 
-
 $app->post('/publish/{signature}', function (Request $request, Response $response) {
-    //$app->response->headers->set('Content-Type', 'application/json');
+    
     $signature = $request->getAttribute('signature');
-    $client = new MultichainClient("http://52.90.200.114:9540", 'multichainrpc', 'EEwTda1ogNMSXnpMV8qWtTobKfZ2EM2618UybDSGvwJ9', 3);
+    $client = new MultichainClient("http://<MultiChain Node IP>:<RPC Port>", 'multichainrpc', '<RPC Password>', 3);
     //$response->getBody()->write("Hello, $signature");
     $data = $request->getParsedBody();
     if(isset($data['name']))
@@ -98,7 +96,7 @@ $app->post('/publish/{signature}', function (Request $request, Response $respons
 
 $app->get('/verify/{signature}', function (Request $request, Response $response) {
     $signature = $request->getAttribute('signature');
-    $client = new MultichainClient("http://52.90.200.114:9540", 'multichainrpc', 'EEwTda1ogNMSXnpMV8qWtTobKfZ2EM2618UybDSGvwJ9', 3);
+    $client = new MultichainClient("http://<MultiChain Node IP>:<RPC Port>", 'multichainrpc', '<RPC Password>', 3);
     $data = $client->setDebug(true)->executeApi('liststreamkeyitems', array("poe", $signature));
     $data = array_reverse($data);
     $dataToReturn = array();
@@ -124,7 +122,7 @@ $app->get('/verify/{signature}', function (Request $request, Response $response)
 $app->get('/latest/published/{count}', function (Request $request, Response $response) {
     //$app->response->headers->set('Content-Type', 'application/json');
     $count = $request->getAttribute('count');
-    $client = new MultichainClient("http://52.90.200.114:9540", 'multichainrpc', 'EEwTda1ogNMSXnpMV8qWtTobKfZ2EM2618UybDSGvwJ9', 3);
+    $client = new MultichainClient("http://<MultiChain Node IP>:<RPC Port>", 'multichainrpc', '<RPC Password>', 3);
     $data = $client->setDebug(true)->executeApi('liststreamitems', array("poe"));
     $data = array_reverse($data);
     $dataToReturn = array();
@@ -142,7 +140,5 @@ $app->get('/latest/published/{count}', function (Request $request, Response $res
     return $response->withJson($dataToReturn)->withHeader('Content-Type', 'application/json');
     //return $response;
 });
-
-
 // Run app
 $app->run();

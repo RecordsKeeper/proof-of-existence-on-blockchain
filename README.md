@@ -1,7 +1,7 @@
 # proofofexistence
 
 ## What is it?
-Demo Live [here] (http://proofofexistence.org)
+Demo Live [here] (http://proofofexistence.org).
 
 This is a tool to generate a Proof-of-Existence of a file or record on Private Blockchain. By submiting this form you will be uploading the file's signature with it's associated information into the Private Decentralized Public Ledger. Records stored here can later be fetched to prove that this file existed on particular date & time with the associated information.
 
@@ -17,5 +17,7 @@ We have extended the existing MultiChain PHP Library [libphp-multichain] (https:
 	public function executeApi($method, $paramArray) {
         	return $this->jsonRPCClient->execute($method, $paramArray);
 	}
-    
+
+## License 
+Source code available under [Apache License 2.0 (Apache-2.0)] (https://tldrlegal.com/license/apache-license-2.0-(apache-2.0))  
     
